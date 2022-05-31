@@ -31,54 +31,57 @@ class HomePage extends StatelessWidget {
                   itemCount: respostas.length,
                   itemBuilder: (_, index) {
                     final resposta = respostas[index];
-                    return ExpansionTile(
-                      childrenPadding: const EdgeInsets.only(left: 16),
-                      title: Text(
-                        'Resposta ${resposta.codigo}',
-                        style: const TextStyle(
-                          fontSize: 20,
-                          fontWeight: FontWeight.bold,
+                    return Card(
+                      child: ExpansionTile(
+                        childrenPadding: const EdgeInsets.only(left: 16),
+                        title: Text(
+                          'Resposta ${resposta.codigo}',
+                          style: const TextStyle(
+                            fontSize: 20,
+                            fontWeight: FontWeight.bold,
+                          ),
                         ),
+                        children: [
+                          Row(
+                            children: [
+                              Expanded(
+                                child: Column(
+                                  crossAxisAlignment: CrossAxisAlignment.start,
+                                  children: [
+                                    Text(
+                                      resposta.naturalUba
+                                          ? 'Bairro: ${resposta.bairro}'
+                                          : 'Cidade: ${resposta.cidade}',
+                                      style: const TextStyle(
+                                        fontSize: 16,
+                                        fontWeight: FontWeight.w600,
+                                      ),
+                                    ),
+                                    const SizedBox(height: 10),
+                                    Text(
+                                      resposta.naturalUba
+                                          ? 'Porcentagem de orgulho de ser Ubaense: ${resposta.porcOrgulhoUbaense == 0 ? 'Não informado' : resposta.porcOrgulhoUbaense}'
+                                          : 'Tempo de Vivencia em Ubá: ${resposta.tempoVivenciaUba == 0 ? 'Não informado' : resposta.tempoVivenciaUba}',
+                                      style: const TextStyle(
+                                        fontSize: 16,
+                                        fontWeight: FontWeight.w600,
+                                      ),
+                                    ),
+                                    const SizedBox(height: 10),
+                                  ],
+                                ),
+                              ),
+                              Expanded(
+                                child: CheckboxListTile(
+                                  title: const Text('Natural de Uba'),
+                                  value: resposta.naturalUba,
+                                  onChanged: (value) {},
+                                ),
+                              )
+                            ],
+                          ),
+                        ],
                       ),
-                      children: [
-                        Row(
-                          children: [
-                            Expanded(
-                              child: Column(
-                                crossAxisAlignment: CrossAxisAlignment.start,
-                                children: [
-                                  Text(
-                                    resposta.naturalUba
-                                        ? 'Bairro: ${resposta.bairro}'
-                                        : 'Cidade: ${resposta.cidade}',
-                                    style: const TextStyle(
-                                      fontSize: 16,
-                                      fontWeight: FontWeight.w600,
-                                    ),
-                                  ),
-                                  const SizedBox(height: 10),
-                                  Text(
-                                    resposta.naturalUba
-                                        ? 'Porcentagem de orgulho de ser Ubaense: ${resposta.porcOrgulhoUbaense == 0 ? 'Não informado' : resposta.porcOrgulhoUbaense}'
-                                        : 'Tempo de Vivencia em Ubá: ${resposta.tempoVivenciaUba == 0 ? 'Não informado' : resposta.tempoVivenciaUba}',
-                                    style: const TextStyle(
-                                      fontSize: 16,
-                                      fontWeight: FontWeight.w600,
-                                    ),
-                                  ),
-                                  const SizedBox(height: 10),
-                                ],
-                              ),
-                            ),
-                            Expanded(
-                              child: CheckboxListTile(
-                                value: resposta.naturalUba,
-                                onChanged: (value) {},
-                              ),
-                            )
-                          ],
-                        ),
-                      ],
                     );
                   },
                 ),
