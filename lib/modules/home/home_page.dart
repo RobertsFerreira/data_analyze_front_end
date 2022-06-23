@@ -1,8 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_mobx/flutter_mobx.dart';
 
+import 'controller/home_controller.dart';
+
 class HomePage extends StatelessWidget {
-  const HomePage({Key? key}) : super(key: key);
+  final controller = HomeController();
+  HomePage({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -21,7 +24,7 @@ class HomePage extends StatelessWidget {
                   height: 80,
                   width: 200,
                   child: ElevatedButton(
-                    onPressed: () {},
+                    onPressed: () async => controller.getFile(),
                     child: const Text(
                       'Upload\n\nBase de Dados',
                       textAlign: TextAlign.center,

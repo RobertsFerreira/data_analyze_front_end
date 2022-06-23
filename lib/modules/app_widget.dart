@@ -15,7 +15,7 @@ class AppWidget extends StatelessWidget {
           seedColor: Colors.blue,
         ),
       ),
-      home: const HomePage(),
+      home: HomePage(),
     );
   }
 }

@@ -1,3 +1,7 @@
+import 'dart:developer';
+import 'dart:io';
+
+import 'package:file_picker/file_picker.dart';
 import 'package:mobx/mobx.dart';
 
 import '../models/respostas/respostas_model.dart';
@@ -8,7 +12,19 @@ class HomeController = _HomeControllerBase with _$HomeController;
 
 abstract class _HomeControllerBase with Store {
   @action
-  getFile() {}
+  getFile() async {
+    FilePickerResult? fileResult = await FilePicker.platform.pickFiles();
+
+    if (fileResult != null) {
+      final String? path = fileResult.files.single.path;
+      if (path != null) {
+        File file = File(path);
+        log(file.readAsStringSync());
+      } else {
+        throw Exception("Erro ao ler caminho do arquivo");
+      }
+    }
+  }
 
   @observable
   ObservableList<RespostasModel> respostas = [

@@ -50,6 +50,14 @@ mixin _$HomeController on _HomeControllerBase, Store {
     });
   }
 
+  late final _$getFileAsyncAction =
+      AsyncAction('_HomeControllerBase.getFile', context: context);
+
+  @override
+  Future getFile() {
+    return _$getFileAsyncAction.run(() => super.getFile());
+  }
+
   late final _$_HomeControllerBaseActionController =
       ActionController(name: '_HomeControllerBase', context: context);
 
