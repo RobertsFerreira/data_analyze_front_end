@@ -9,26 +9,41 @@ part of 'home_controller.dart';
 // ignore_for_file: non_constant_identifier_names, unnecessary_brace_in_string_interps, unnecessary_lambdas, prefer_expression_function_bodies, lines_longer_than_80_chars, avoid_as, avoid_annotating_with_dynamic
 
 mixin _$HomeController on _HomeControllerBase, Store {
-  Computed<ObservableList<RespostasModel>>? _$filterRespostasComputed;
+  Computed<List<RespostasModel>>? _$filterRespostasComputed;
 
   @override
-  ObservableList<RespostasModel> get filterRespostas =>
-      (_$filterRespostasComputed ??= Computed<ObservableList<RespostasModel>>(
-              () => super.filterRespostas,
+  List<RespostasModel> get filterRespostas => (_$filterRespostasComputed ??=
+          Computed<List<RespostasModel>>(() => super.filterRespostas,
               name: '_HomeControllerBase.filterRespostas'))
-          .value;
+      .value;
+
+  late final _$isLoadingAtom =
+      Atom(name: '_HomeControllerBase.isLoading', context: context);
+
+  @override
+  bool get isLoading {
+    _$isLoadingAtom.reportRead();
+    return super.isLoading;
+  }
+
+  @override
+  set isLoading(bool value) {
+    _$isLoadingAtom.reportWrite(value, super.isLoading, () {
+      super.isLoading = value;
+    });
+  }
 
   late final _$respostasAtom =
       Atom(name: '_HomeControllerBase.respostas', context: context);
 
   @override
-  ObservableList<RespostasModel> get respostas {
+  List<RespostasModel> get respostas {
     _$respostasAtom.reportRead();
     return super.respostas;
   }
 
   @override
-  set respostas(ObservableList<RespostasModel> value) {
+  set respostas(List<RespostasModel> value) {
     _$respostasAtom.reportWrite(value, super.respostas, () {
       super.respostas = value;
     });
@@ -54,12 +69,23 @@ mixin _$HomeController on _HomeControllerBase, Store {
       AsyncAction('_HomeControllerBase.getFile', context: context);
 
   @override
-  Future getFile() {
+  Future<bool> getFile() {
     return _$getFileAsyncAction.run(() => super.getFile());
   }
 
   late final _$_HomeControllerBaseActionController =
       ActionController(name: '_HomeControllerBase', context: context);
+
+  @override
+  void setLoading(bool value) {
+    final _$actionInfo = _$_HomeControllerBaseActionController.startAction(
+        name: '_HomeControllerBase.setLoading');
+    try {
+      return super.setLoading(value);
+    } finally {
+      _$_HomeControllerBaseActionController.endAction(_$actionInfo);
+    }
+  }
 
   @override
   void setTextSearch(String value) {
@@ -75,6 +101,7 @@ mixin _$HomeController on _HomeControllerBase, Store {
   @override
   String toString() {
     return '''
+isLoading: ${isLoading},
 respostas: ${respostas},
 textSearch: ${textSearch},
 filterRespostas: ${filterRespostas}

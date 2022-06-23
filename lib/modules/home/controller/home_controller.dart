@@ -11,23 +11,39 @@ part 'home_controller.g.dart';
 class HomeController = _HomeControllerBase with _$HomeController;
 
 abstract class _HomeControllerBase with Store {
-  @action
-  getFile() async {
-    FilePickerResult? fileResult = await FilePicker.platform.pickFiles();
+  @observable
+  bool isLoading = false;
 
-    if (fileResult != null) {
-      final String? path = fileResult.files.single.path;
-      if (path != null) {
-        File file = File(path);
-        log(file.readAsStringSync());
+  @action
+  void setLoading(bool value) => isLoading = value;
+
+  @action
+  Future<bool> getFile() async {
+    try {
+      setLoading(true);
+      FilePickerResult? fileResult = await FilePicker.platform.pickFiles();
+      if (fileResult != null) {
+        final String? path = fileResult.files.single.path;
+        if (path != null) {
+          await Future.delayed(const Duration(seconds: 3));
+          File file = File(path);
+          log(file.readAsStringSync());
+          return true;
+        } else {
+          throw Exception("Erro ao ler caminho do arquivo");
+        }
       } else {
-        throw Exception("Erro ao ler caminho do arquivo");
+        throw Exception("Erro ao selecionar o arquivo");
       }
+    } catch (e) {
+      rethrow;
+    } finally {
+      setLoading(false);
     }
   }
 
   @observable
-  ObservableList<RespostasModel> respostas = [
+  List<RespostasModel> respostas = [
     RespostasModel(
       codigo: 1,
       naturalUba: true,
@@ -91,7 +107,7 @@ abstract class _HomeControllerBase with Store {
   ].asObservable();
 
   @computed
-  ObservableList<RespostasModel> get filterRespostas {
+  List<RespostasModel> get filterRespostas {
     List<RespostasModel> _resp = respostas;
     _resp = respostas
         .where((resp) => resp.codigo.toString().contains(textSearch))

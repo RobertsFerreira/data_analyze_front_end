@@ -12,6 +12,7 @@ class HomePage extends StatelessWidget {
     return Scaffold(
       body: Observer(
         builder: (_) {
+          final isLoading = controller.isLoading;
           return Center(
             child: Column(
               children: [
@@ -21,14 +22,16 @@ class HomePage extends StatelessWidget {
                   child: Image.asset('assets/images/logo.jpg'),
                 ),
                 SizedBox(
-                  height: 80,
+                  height: 65,
                   width: 200,
-                  child: ElevatedButton(
+                  child: FloatingActionButton.extended(
                     onPressed: () async => controller.getFile(),
-                    child: const Text(
-                      'Upload\n\nBase de Dados',
-                      textAlign: TextAlign.center,
-                    ),
+                    label: isLoading
+                        ? const CircularProgressIndicator()
+                        : const Text(
+                            'Selecionar Base de Dados',
+                            textAlign: TextAlign.center,
+                          ),
                   ),
                 ),
               ],
