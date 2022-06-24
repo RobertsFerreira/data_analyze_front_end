@@ -18,9 +18,9 @@ abstract class _HomeControllerBase with Store {
   void setLoading(bool value) => isLoading = value;
 
   @action
-  Future<bool> getFile() async {
+  Future<void> getFile() async {
+    setLoading(true);
     try {
-      setLoading(true);
       FilePickerResult? fileResult = await FilePicker.platform.pickFiles();
       if (fileResult != null) {
         final String? path = fileResult.files.single.path;
@@ -28,7 +28,6 @@ abstract class _HomeControllerBase with Store {
           await Future.delayed(const Duration(seconds: 3));
           File file = File(path);
           log(file.readAsStringSync());
-          return true;
         } else {
           throw Exception("Erro ao ler caminho do arquivo");
         }
@@ -108,15 +107,15 @@ abstract class _HomeControllerBase with Store {
 
   @computed
   List<RespostasModel> get filterRespostas {
-    List<RespostasModel> _resp = respostas;
-    _resp = respostas
+    List<RespostasModel> resp = respostas;
+    resp = respostas
         .where((resp) => resp.codigo.toString().contains(textSearch))
         .toList()
         .asObservable();
-    if (_resp.isEmpty) {
-      _resp = respostas.asObservable();
+    if (resp.isEmpty) {
+      resp = respostas.asObservable();
     }
-    return _resp.asObservable();
+    return resp.asObservable();
   }
 
   @observable

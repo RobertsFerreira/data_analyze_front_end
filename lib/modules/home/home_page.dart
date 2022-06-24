@@ -10,34 +10,40 @@ class HomePage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: Observer(
-        builder: (_) {
-          final isLoading = controller.isLoading;
-          return Center(
-            child: Column(
-              children: [
-                SizedBox(
-                  height: 450,
-                  width: 450,
-                  child: Image.asset('assets/images/logo.jpg'),
-                ),
-                SizedBox(
-                  height: 65,
-                  width: 200,
-                  child: FloatingActionButton.extended(
-                    onPressed: () async => controller.getFile(),
-                    label: isLoading
-                        ? const CircularProgressIndicator()
-                        : const Text(
-                            'Selecionar Base de Dados',
-                            textAlign: TextAlign.center,
-                          ),
-                  ),
-                ),
-              ],
+      body: Center(
+        child: Column(
+          children: [
+            SizedBox(
+              height: 450,
+              width: 450,
+              child: Image.asset('assets/images/logo.jpg'),
             ),
-          );
-        },
+            Observer(
+              builder: (_) {
+                final isLoading = controller.isLoading;
+                return Row(
+                  mainAxisSize: MainAxisSize.min,
+                  children: [
+                    FloatingActionButton.extended(
+                      onPressed: () async => controller.getFile(),
+                      label: isLoading
+                          ? const CircularProgressIndicator()
+                          : const Text(
+                              'Selecionar Base de Dados',
+                              textAlign: TextAlign.center,
+                            ),
+                    ),
+                    const SizedBox(width: 10),
+                    FloatingActionButton.extended(
+                      onPressed: () => Navigator.of(context).pushNamed('help'),
+                      label: const Text('Ajuda'),
+                    ),
+                  ],
+                );
+              },
+            ),
+          ],
+        ),
       ),
     );
   }
