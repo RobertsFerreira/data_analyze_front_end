@@ -1,6 +1,7 @@
 import 'dart:developer';
 import 'dart:io';
 
+import 'package:data_analyze/utils/async_function.dart';
 import 'package:file_picker/file_picker.dart';
 import 'package:mobx/mobx.dart';
 
@@ -18,28 +19,28 @@ abstract class _HomeControllerBase with Store {
   void setLoading(bool value) => isLoading = value;
 
   @action
-  Future<void> getFile() async {
-    setLoading(true);
-    try {
-      FilePickerResult? fileResult = await FilePicker.platform.pickFiles();
-      if (fileResult != null) {
-        final String? path = fileResult.files.single.path;
-        if (path != null) {
-          await Future.delayed(const Duration(seconds: 3));
-          File file = File(path);
-          log(file.readAsStringSync());
-        } else {
-          throw Exception("Erro ao ler caminho do arquivo");
+  Future<void> getFile() => asyncAction(() async {
+        setLoading(true);
+        try {
+          FilePickerResult? fileResult = await FilePicker.platform.pickFiles();
+          if (fileResult != null) {
+            final String? path = fileResult.files.single.path;
+            if (path != null) {
+              await Future.delayed(const Duration(seconds: 3));
+              File file = File(path);
+              log(file.readAsStringSync());
+            } else {
+              throw Exception("Erro ao ler caminho do arquivo");
+            }
+          } else {
+            throw Exception("Erro ao selecionar o arquivo");
+          }
+        } catch (e) {
+          rethrow;
+        } finally {
+          setLoading(false);
         }
-      } else {
-        throw Exception("Erro ao selecionar o arquivo");
-      }
-    } catch (e) {
-      rethrow;
-    } finally {
-      setLoading(false);
-    }
-  }
+      });
 
   @observable
   List<RespostasModel> respostas = [

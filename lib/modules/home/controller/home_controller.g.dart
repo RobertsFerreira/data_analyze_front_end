@@ -65,14 +65,6 @@ mixin _$HomeController on _HomeControllerBase, Store {
     });
   }
 
-  late final _$getFileAsyncAction =
-      AsyncAction('_HomeControllerBase.getFile', context: context);
-
-  @override
-  Future<void> getFile() {
-    return _$getFileAsyncAction.run(() => super.getFile());
-  }
-
   late final _$_HomeControllerBaseActionController =
       ActionController(name: '_HomeControllerBase', context: context);
 
@@ -82,6 +74,17 @@ mixin _$HomeController on _HomeControllerBase, Store {
         name: '_HomeControllerBase.setLoading');
     try {
       return super.setLoading(value);
+    } finally {
+      _$_HomeControllerBaseActionController.endAction(_$actionInfo);
+    }
+  }
+
+  @override
+  Future<void> getFile() {
+    final _$actionInfo = _$_HomeControllerBaseActionController.startAction(
+        name: '_HomeControllerBase.getFile');
+    try {
+      return super.getFile();
     } finally {
       _$_HomeControllerBaseActionController.endAction(_$actionInfo);
     }
