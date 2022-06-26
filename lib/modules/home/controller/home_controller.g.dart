@@ -33,6 +33,22 @@ mixin _$HomeController on _HomeControllerBase, Store {
     });
   }
 
+  late final _$errorAtom =
+      Atom(name: '_HomeControllerBase.error', context: context);
+
+  @override
+  dynamic get error {
+    _$errorAtom.reportRead();
+    return super.error;
+  }
+
+  @override
+  set error(dynamic value) {
+    _$errorAtom.reportWrite(value, super.error, () {
+      super.error = value;
+    });
+  }
+
   late final _$respostasAtom =
       Atom(name: '_HomeControllerBase.respostas', context: context);
 
@@ -105,6 +121,7 @@ mixin _$HomeController on _HomeControllerBase, Store {
   String toString() {
     return '''
 isLoading: ${isLoading},
+error: ${error},
 respostas: ${respostas},
 textSearch: ${textSearch},
 filterRespostas: ${filterRespostas}
