@@ -20,6 +20,24 @@ class HomePage extends StatelessWidget {
               width: 450,
               child: Image.asset('assets/images/logo.jpg'),
             ),
+            const SizedBox(),
+            SizedBox(
+              height: 80,
+              width: 200,
+              child: TextFormField(
+                enabled: false,
+                controller: controller.textEditingController,
+                decoration: const InputDecoration(
+                  border: OutlineInputBorder(
+                    borderRadius: BorderRadius.all(
+                      Radius.circular(5),
+                    ),
+                  ),
+                  label: Text('Número de Questões'),
+                ),
+              ),
+            ),
+            const SizedBox(),
             Observer(
               builder: (_) {
                 final isLoading = controller.isLoading;
@@ -57,7 +75,7 @@ class HomePage extends StatelessWidget {
                               );
                             },
                           );
-                        } else {
+                        } else if (error != null) {
                           showDialog(
                             context: context,
                             builder: (ctx) {

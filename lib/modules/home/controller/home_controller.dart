@@ -1,15 +1,19 @@
+import 'dart:io';
+
 import 'package:data_analyze/utils/async_function.dart';
+import 'package:file_picker/file_picker.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:mobx/mobx.dart';
 
+import '../error/home_error.dart';
 import '../models/respostas/respostas_model.dart';
-import '../store/home_store.dart';
 
 part 'home_controller.g.dart';
 
 class HomeController = _HomeControllerBase with _$HomeController;
 
 abstract class _HomeControllerBase with Store {
-  final homeStore = HomeStore();
+  final TextEditingController textEditingController = TextEditingController();
 
   @observable
   bool isLoading = false;
@@ -20,12 +24,52 @@ abstract class _HomeControllerBase with Store {
   @observable
   dynamic error;
 
+  @observable
+  File? file;
+
+  @action
+  void setFile(File? value) => file = value;
+
+  @observable
+  List<String> questions = [];
+
+  @computed
+  int get numberOfQuestions => questions.length;
+
+  @action
+  void loadDados() {
+    if (file != null) {
+      final fileRead = file!.readAsLinesSync();
+      questions = fileRead[0].split(';').toList();
+      textEditingController.text = numberOfQuestions.toString();
+    }
+  }
+
   @action
   Future<void> getFile() => asyncAction(() async {
         setLoading(true);
         try {
-          await homeStore.getFile();
-        } catch (e) {
+          FilePickerResult? fileResult = await FilePicker.platform.pickFiles();
+          if (fileResult != null) {
+            String? path = fileResult.files.single.path;
+            if (path != null) {
+              error = null;
+              File file = File(path);
+              setFile(file);
+              loadDados();
+            } else {
+              throw FileError(
+                message: "Erro ao ler caminho do arquivo",
+              );
+            }
+          } else {
+            throw ChooseFileError(
+              message: "Erro ao selecionar o arquivo",
+            );
+          }
+        } on FileError catch (e) {
+          error = e;
+        } on ChooseFileError catch (e) {
           error = e;
         } finally {
           setLoading(false);
