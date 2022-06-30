@@ -107,6 +107,17 @@ class HomePage extends StatelessWidget {
                         ],
                       ),
                     ),
+                    const SizedBox(width: 10),
+                    FloatingActionButton.extended(
+                      onPressed: () => controller.verifyStatsApi(),
+                      label: Row(
+                        mainAxisSize: MainAxisSize.min,
+                        children: const [
+                          Text('Verificar API'),
+                          Icon(Icons.web)
+                        ],
+                      ),
+                    ),
                   ],
                 );
               },

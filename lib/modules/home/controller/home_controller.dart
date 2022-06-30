@@ -7,6 +7,7 @@ import 'package:mobx/mobx.dart';
 
 import '../error/home_error.dart';
 import '../models/respostas/respostas_model.dart';
+import '../repository/home_repository.dart';
 
 part 'home_controller.g.dart';
 
@@ -14,6 +15,7 @@ class HomeController = _HomeControllerBase with _$HomeController;
 
 abstract class _HomeControllerBase with Store {
   final TextEditingController textEditingController = TextEditingController();
+  final repository = HomeRepository();
 
   @observable
   bool isLoading = false;
@@ -44,6 +46,18 @@ abstract class _HomeControllerBase with Store {
       textEditingController.text = numberOfQuestions.toString();
     }
   }
+
+  @action
+  void verifyStatsApi() => asyncAction(() async {
+        setLoading(true);
+        try {
+          final result = await repository.verifyStatsApi();
+        } catch (e) {
+          print(e);
+        } finally {
+          setLoading(false);
+        }
+      });
 
   @action
   Future<void> getFile() => asyncAction(() async {
