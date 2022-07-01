@@ -20,9 +20,15 @@ class HomeRepository {
     }
   }
 
-  bool upload(FormData formData) {
+  Future<bool> upload(FormData formData) async {
     try {
-      final response = dio.post('');
+      final response = await dio.post(
+        '/upload',
+        data: formData,
+        options: Options(
+          contentType: 'multipart/form-data',
+        ),
+      );
       return false;
     } catch (e) {
       rethrow;

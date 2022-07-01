@@ -1,6 +1,8 @@
 import 'dart:io';
+import 'dart:typed_data';
 
 import 'package:data_analyze/utils/async_function.dart';
+import 'package:dio/dio.dart';
 import 'package:file_picker/file_picker.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:mobx/mobx.dart';
@@ -33,10 +35,31 @@ abstract class _HomeControllerBase with Store {
   void setFile(File? value) => file = value;
 
   @observable
+  Uint8List file64 = Uint8List(1);
+
+  @action
+  void setFileB64(Uint8List file) => file64 = file;
+
+  @observable
   List<String> questions = [];
 
   @computed
   int get numberOfQuestions => questions.length;
+
+  @action
+  Future<void> uploadFile() => asyncAction(() async {
+        if (file != null) {
+          final FormData formData = FormData.fromMap(
+            {
+              'file': MultipartFile.fromBytes(
+                file64,
+                filename: file!.absolute.path,
+              ),
+            },
+          );
+          final result = await repository.upload(formData);
+        }
+      });
 
   @action
   void loadDados() {
@@ -63,8 +86,11 @@ abstract class _HomeControllerBase with Store {
   Future<void> getFile() => asyncAction(() async {
         setLoading(true);
         try {
-          FilePickerResult? fileResult = await FilePicker.platform.pickFiles();
+          FilePickerResult? fileResult =
+              await FilePicker.platform.pickFiles(withData: true);
           if (fileResult != null) {
+            final fileB64 = fileResult.files.first.bytes!;
+            setFileB64(fileB64);
             String? path = fileResult.files.single.path;
             if (path != null) {
               error = null;

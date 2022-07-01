@@ -109,11 +109,11 @@ class HomePage extends StatelessWidget {
                     ),
                     const SizedBox(width: 10),
                     FloatingActionButton.extended(
-                      onPressed: () => controller.verifyStatsApi(),
+                      onPressed: () async => controller.uploadFile(),
                       label: Row(
                         mainAxisSize: MainAxisSize.min,
                         children: const [
-                          Text('Verificar API'),
+                          Text('Enviar arquivo'),
                           Icon(Icons.web)
                         ],
                       ),

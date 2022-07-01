@@ -72,6 +72,22 @@ mixin _$HomeController on _HomeControllerBase, Store {
     });
   }
 
+  late final _$file64Atom =
+      Atom(name: '_HomeControllerBase.file64', context: context);
+
+  @override
+  Uint8List get file64 {
+    _$file64Atom.reportRead();
+    return super.file64;
+  }
+
+  @override
+  set file64(Uint8List value) {
+    _$file64Atom.reportWrite(value, super.file64, () {
+      super.file64 = value;
+    });
+  }
+
   late final _$questionsAtom =
       Atom(name: '_HomeControllerBase.questions', context: context);
 
@@ -146,6 +162,28 @@ mixin _$HomeController on _HomeControllerBase, Store {
   }
 
   @override
+  void setFileB64(Uint8List file) {
+    final _$actionInfo = _$_HomeControllerBaseActionController.startAction(
+        name: '_HomeControllerBase.setFileB64');
+    try {
+      return super.setFileB64(file);
+    } finally {
+      _$_HomeControllerBaseActionController.endAction(_$actionInfo);
+    }
+  }
+
+  @override
+  Future<void> uploadFile() {
+    final _$actionInfo = _$_HomeControllerBaseActionController.startAction(
+        name: '_HomeControllerBase.uploadFile');
+    try {
+      return super.uploadFile();
+    } finally {
+      _$_HomeControllerBaseActionController.endAction(_$actionInfo);
+    }
+  }
+
+  @override
   void loadDados() {
     final _$actionInfo = _$_HomeControllerBaseActionController.startAction(
         name: '_HomeControllerBase.loadDados');
@@ -195,6 +233,7 @@ mixin _$HomeController on _HomeControllerBase, Store {
 isLoading: ${isLoading},
 error: ${error},
 file: ${file},
+file64: ${file64},
 questions: ${questions},
 respostas: ${respostas},
 textSearch: ${textSearch},
