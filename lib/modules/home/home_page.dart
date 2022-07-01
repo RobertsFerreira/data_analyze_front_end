@@ -15,6 +15,23 @@ class HomePage extends StatelessWidget {
       body: Center(
         child: Column(
           children: [
+            // Expanded(
+            //   child: NavigationRail(
+            //     selectedIndex: 0,
+            //     labelType: NavigationRailLabelType.all,
+            //     destinations: [
+            //       NavigationRailDestination(
+            //         icon: const Icon(Icons.abc),
+            //         label: Container(),
+            //       ),
+            //       NavigationRailDestination(
+            //         icon: const Icon(Icons.account_balance),
+            //         label: Container(),
+            //       ),
+            //     ],
+            //   ),
+            // ),
+            // const Spacer(),
             SizedBox(
               height: 450,
               width: 450,
