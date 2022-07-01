@@ -1,3 +1,4 @@
+import 'dart:developer';
 import 'dart:io';
 import 'dart:typed_data';
 
@@ -58,6 +59,7 @@ abstract class _HomeControllerBase with Store {
             },
           );
           final result = await repository.upload(formData);
+          log(result.toString());
         }
       });
 
@@ -75,8 +77,9 @@ abstract class _HomeControllerBase with Store {
         setLoading(true);
         try {
           final result = await repository.verifyStatsApi();
+          log(result.toString());
         } catch (e) {
-          print(e);
+          log(e.toString());
         } finally {
           setLoading(false);
         }

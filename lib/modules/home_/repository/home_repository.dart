@@ -1,3 +1,5 @@
+import 'dart:developer';
+
 import 'package:dio/dio.dart';
 
 class HomeRepository {
@@ -29,6 +31,7 @@ class HomeRepository {
           contentType: 'multipart/form-data',
         ),
       );
+      log(response.data);
       return false;
     } catch (e) {
       rethrow;
