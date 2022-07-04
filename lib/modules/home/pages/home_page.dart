@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_mobx/flutter_mobx.dart';
 
-import '../home/controller/home_controller.dart';
+import '../controller/home_controller.dart';
 
 class HomePage extends StatelessWidget {
   final controller = HomeController();
@@ -45,13 +45,13 @@ class HomePage extends StatelessWidget {
             ),
           ),
           const VerticalDivider(),
-          Observer(
-            builder: (_) {
-              final widgetPageSelected = controller.pageSelect.widget;
-              return Expanded(
-                child: widgetPageSelected,
-              );
-            },
+          Expanded(
+            child: Observer(
+              builder: (_) {
+                final widgetPageSelected = controller.pageSelect.widget;
+                return widgetPageSelected;
+              },
+            ),
           )
         ],
       ),
