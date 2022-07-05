@@ -1,4 +1,7 @@
+import 'package:data_analyze/modules/manipulation_file/datasource/manipulation_file_datasource.dart';
 import 'package:flutter/material.dart';
+
+import '../controller/manipulation_file_controller.dart';
 
 class ManipulationFile extends StatefulWidget {
   const ManipulationFile({Key? key}) : super(key: key);
@@ -8,6 +11,9 @@ class ManipulationFile extends StatefulWidget {
 }
 
 class _ManipulationFileState extends State<ManipulationFile> {
+  final controller = ManipulationFileController(
+    dataSource: ManipulationFileDataSource(),
+  );
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -22,6 +28,7 @@ class _ManipulationFileState extends State<ManipulationFile> {
               Expanded(
                 flex: 2,
                 child: TextFormField(
+                  controller: controller.textEditingController,
                   decoration: const InputDecoration(
                     label: Text('Arquivo Selecionado'),
                     border: OutlineInputBorder(
@@ -33,9 +40,9 @@ class _ManipulationFileState extends State<ManipulationFile> {
                 ),
               ),
               const SizedBox(width: 10),
-              const ElevatedButton(
-                onPressed: null,
-                child: Text('Selecionar arquivo'),
+              ElevatedButton(
+                onPressed: controller.openFile,
+                child: const Text('Selecionar arquivo'),
               ),
               const SizedBox(width: 10),
             ],
