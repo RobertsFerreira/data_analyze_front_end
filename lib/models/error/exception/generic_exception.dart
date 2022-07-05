@@ -75,3 +75,11 @@ class GenericException implements Exception {
     return map;
   }
 }
+
+class UnknownError extends GenericException {
+  UnknownError({
+    required super.message,
+    super.keys,
+    super.datas,
+  });
+}

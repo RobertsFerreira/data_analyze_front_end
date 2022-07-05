@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_mobx/flutter_mobx.dart';
+import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 
 import '../controller/home_controller.dart';
 
@@ -185,6 +186,13 @@ class HomePage extends StatelessWidget {
       //     ],
       //   ),
       // ),
+      floatingActionButton: const Tooltip(
+        message: 'Ajuda',
+        child: FloatingActionButton.extended(
+          onPressed: null,
+          label: FaIcon(FontAwesomeIcons.circleQuestion),
+        ),
+      ),
     );
   }
 }

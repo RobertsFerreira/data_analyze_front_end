@@ -11,16 +11,21 @@ enum EnumPageSelect {
     ),
   ),
 
-  openFile(
-    title: 'Open File',
-    icon: FontAwesomeIcons.filePen,
-    widget: Center(
-      child: Text('Open File'),
-    ),
-  ),
+  // openFile(
+  //   title: 'Open File',
+  //   icon: FontAwesomeIcons.filePen,
+  //   widget: Center(
+  //     child: Text('Open File'),
+  //   ),
+  // ),
 
-  uploadFile(
-    title: 'Upload File',
+  // uploadFile(
+  //   title: 'Upload File',
+  //   icon: FontAwesomeIcons.fileArrowUp,
+  //   widget: ManipulationFile(),
+  // ),
+  manipulationFile(
+    title: 'Manipulation File',
     icon: FontAwesomeIcons.fileArrowUp,
     widget: ManipulationFile(),
   ),
