@@ -26,7 +26,7 @@ enum EnumPageSelect {
   // ),
   manipulationFile(
     title: 'Manipulation File',
-    icon: FontAwesomeIcons.fileArrowUp,
+    icon: FontAwesomeIcons.filePen,
     widget: ManipulationFile(),
   ),
 
