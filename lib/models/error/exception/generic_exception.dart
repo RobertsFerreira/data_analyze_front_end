@@ -1,4 +1,5 @@
 import 'dart:convert';
+import 'dart:developer';
 import 'dart:io';
 
 import 'package:data_analyze/utils/format_date.dart';
@@ -19,6 +20,11 @@ class GenericException implements Exception {
   void generatedFileLog() {
     try {
       final file = File('error.log');
+      if (!file.existsSync()) {
+        //   final dir = Directory('error');
+        //   if (!dir.existsSync()) dir.createSync();
+        file.createSync();
+      }
       final time = DateTime.now();
       file.writeAsStringSync(
         'Horário: ${formatDate(time, true)}\n\n',
@@ -44,7 +50,8 @@ class GenericException implements Exception {
           mode: FileMode.append,
         );
       }
-    } catch (e) {
+    } catch (error, stackTrace) {
+      log(error.toString(), error: error, stackTrace: stackTrace);
       generatedFileLog();
     }
   }

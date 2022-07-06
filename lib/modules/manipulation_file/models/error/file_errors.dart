@@ -7,3 +7,11 @@ class FileNotFound extends GenericException {
     super.datas,
   });
 }
+
+class FileSelectError extends GenericException {
+  FileSelectError({
+    required super.message,
+    super.keys,
+    super.datas,
+  });
+}
