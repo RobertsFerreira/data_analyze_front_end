@@ -1,7 +1,7 @@
 import 'dart:io';
 
-import 'package:data_analyze/models/error/exception/generic_exception.dart';
 import 'package:data_analyze/modules/manipulation_file/datasource/manipulation_file_datasource.dart';
+import 'package:data_analyze/modules/manipulation_file/models/error/file_errors.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:fpdart/fpdart.dart';
 
@@ -29,7 +29,7 @@ void main() {
 
         final file = fileDataSource.openFile('$path/a');
 
-        expect(file.fold(id, id), isA<UnknownError>());
+        expect(file.fold(id, id), isA<FileNotFound>());
       },
     );
   });
