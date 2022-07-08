@@ -41,19 +41,19 @@ mixin _$ManipulationFileController on _ManipulationFileControllerBase, Store {
     });
   }
 
-  late final _$file64Atom =
-      Atom(name: '_ManipulationFileControllerBase.file64', context: context);
+  late final _$successAtom =
+      Atom(name: '_ManipulationFileControllerBase.success', context: context);
 
   @override
-  Uint8List get file64 {
-    _$file64Atom.reportRead();
-    return super.file64;
+  bool get success {
+    _$successAtom.reportRead();
+    return super.success;
   }
 
   @override
-  set file64(Uint8List value) {
-    _$file64Atom.reportWrite(value, super.file64, () {
-      super.file64 = value;
+  set success(bool value) {
+    _$successAtom.reportWrite(value, super.success, () {
+      super.success = value;
     });
   }
 
@@ -62,22 +62,22 @@ mixin _$ManipulationFileController on _ManipulationFileControllerBase, Store {
           name: '_ManipulationFileControllerBase', context: context);
 
   @override
-  void setFileB64(Uint8List bytes) {
+  Future<void> verifyStatusApi() {
     final _$actionInfo = _$_ManipulationFileControllerBaseActionController
-        .startAction(name: '_ManipulationFileControllerBase.setFileB64');
+        .startAction(name: '_ManipulationFileControllerBase.verifyStatusApi');
     try {
-      return super.setFileB64(bytes);
+      return super.verifyStatusApi();
     } finally {
       _$_ManipulationFileControllerBaseActionController.endAction(_$actionInfo);
     }
   }
 
   @override
-  void verifyStatusApi() {
+  Future<void> uploadFile() {
     final _$actionInfo = _$_ManipulationFileControllerBaseActionController
-        .startAction(name: '_ManipulationFileControllerBase.verifyStatusApi');
+        .startAction(name: '_ManipulationFileControllerBase.uploadFile');
     try {
-      return super.verifyStatusApi();
+      return super.uploadFile();
     } finally {
       _$_ManipulationFileControllerBaseActionController.endAction(_$actionInfo);
     }
@@ -99,7 +99,7 @@ mixin _$ManipulationFileController on _ManipulationFileControllerBase, Store {
     return '''
 file: ${file},
 error: ${error},
-file64: ${file64}
+success: ${success}
     ''';
   }
 }

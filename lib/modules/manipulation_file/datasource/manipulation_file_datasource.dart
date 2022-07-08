@@ -14,17 +14,30 @@ class ManipulationFileDataSource {
     DioClientHttp(),
   );
 
-  Future<Either<GenericException, void>> uploadFile(
+  Future<Either<GenericException, bool>> verifyStatusApi() async {
+    try {
+      await repository.verifyStatusApi();
+      return const Right(true);
+    } catch (e) {
+      return Left(e as GenericException);
+    }
+  }
+
+  Future<Either<GenericException, bool>> uploadFile(
     Uint8List fileB64, {
-    String? filename,
+    String? fileName,
   }) async {
     try {
-      final result = await repository.verifyStatusApi();
+      bool value = false;
+      final result = await repository.uploadFile(fileB64, fileName);
       result.fold(
         (l) => throw (l),
-        (r) => log(r.toString()),
+        (r) {
+          log(r.toString());
+          value = r;
+        },
       );
-      return const Right(null);
+      return Right(value);
     } catch (e) {
       return Left(
         UnknownError(

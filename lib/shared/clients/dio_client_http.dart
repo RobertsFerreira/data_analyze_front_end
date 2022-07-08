@@ -1,10 +1,10 @@
+import 'dart:typed_data';
+
 import 'package:dio/dio.dart';
 
 import '../../interface/http_client_interface.dart';
 
 class DioClientHttp implements HttpClientInterface {
-  //TODO: Tratar erros do Dio
-
   final Dio _dio = Dio(
     BaseOptions(
       baseUrl: 'http://robertsilva.ddns.net:5000',
@@ -16,6 +16,8 @@ class DioClientHttp implements HttpClientInterface {
     try {
       final result = await _dio.get(url);
       return result.data;
+    } on DioError {
+      rethrow;
     } catch (e) {
       rethrow;
     }
@@ -25,12 +27,30 @@ class DioClientHttp implements HttpClientInterface {
   Future<dynamic> post(
     String url, {
     dynamic data,
+    dynamic options,
   }) async {
     try {
-      final result = await _dio.post(url, data: data);
+      final result = await _dio.post(
+        url,
+        data: data,
+        options: options,
+      );
       return result.data;
+    } on DioError {
+      rethrow;
     } catch (e) {
       rethrow;
     }
+  }
+
+  @override
+  dynamic toFormData(Uint8List fileB64, String? fileName) {
+    final form = FormData.fromMap({
+      "file": MultipartFile.fromBytes(
+        fileB64,
+        filename: fileName,
+      ),
+    });
+    return form;
   }
 }

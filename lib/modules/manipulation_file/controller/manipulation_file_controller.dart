@@ -1,6 +1,5 @@
 import 'dart:developer';
 import 'dart:io';
-import 'dart:typed_data';
 
 import 'package:data_analyze/modules/manipulation_file/datasource/manipulation_file_datasource.dart';
 import 'package:data_analyze/modules/manipulation_file/models/error/file_errors.dart';
@@ -31,17 +30,33 @@ abstract class _ManipulationFileControllerBase with Store {
   dynamic error;
 
   @observable
-  Uint8List file64 = Uint8List(1);
+  bool success = false;
 
   @action
-  void setFileB64(Uint8List bytes) => file64 = bytes;
-
-  @action
-  void verifyStatusApi() => asyncAction(
+  Future<void> verifyStatusApi() => asyncAction(
         () async {
-          await dataSource.uploadFile(
+          await dataSource.verifyStatusApi();
+        },
+      );
+
+  @action
+  Future<void> uploadFile() => asyncAction(
+        () async {
+          error = null;
+          success = false;
+
+          if (file == null) throw InvalidFileError(message: 'Arquivo inválido');
+
+          final file64 = file!.readAsBytesSync();
+
+          final result = await dataSource.uploadFile(
             file64,
-            filename: file?.path,
+            fileName: file?.path,
+          );
+
+          result.fold(
+            (l) => error = l,
+            (r) => success = r,
           );
         },
       );
@@ -59,14 +74,22 @@ abstract class _ManipulationFileControllerBase with Store {
               lockParentWindow: true,
             );
             if (fileResult != null) {
-              final bytes = fileResult.files.first.bytes!;
-              setFileB64(bytes);
               final path = fileResult.files.first.path;
 
-              final result = dataSource.openFile(path ?? '');
+              if (path == null) {
+                throw FileNotFound(
+                  message: 'Caminho do arquivo escolhido não existe!',
+                );
+              }
+
+              final result = dataSource.openFile(path);
               result.fold(
                 (l) => throw (l),
-                (r) => textEditingController.text = r.path,
+                (r) {
+                  textEditingController.text = r.path;
+
+                  file = File(r.path);
+                },
               );
             } else {
               throw FileSelectError(message: "Nenhum arquivo selecionado!!!");
@@ -78,13 +101,36 @@ abstract class _ManipulationFileControllerBase with Store {
               error: e,
               stackTrace: s,
             );
-          } on FileNotFound catch (e, s) {
+          } on FileNotFound catch (erro, stackTrace) {
+            error = FileNotFound(
+              message: erro.message,
+              keys: ['error', 'stackTrace'],
+              datas: [
+                erro.toString(),
+                stackTrace.toString(),
+              ],
+            );
             log(
-              e.message,
-              error: e,
-              stackTrace: s,
+              erro.message,
+              error: erro,
+              stackTrace: stackTrace,
+            );
+          } on InvalidFileError catch (erro, stackTrace) {
+            error = InvalidFileError(
+              message: erro.message,
+              keys: ['error', 'stackTrace'],
+              datas: [
+                erro.toString(),
+                stackTrace.toString(),
+              ],
+            );
+            log(
+              erro.message,
+              error: erro,
+              stackTrace: stackTrace,
             );
           } on UnknownError catch (e, s) {
+            error = e;
             log(
               e.message,
               error: e,

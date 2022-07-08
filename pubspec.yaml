@@ -39,6 +39,7 @@ dependencies:
   file_picker: ^4.6.1
   font_awesome_flutter: ^10.1.0
   fpdart: ^0.1.0
+  cool_alert: ^1.1.0
 
 dev_dependencies:
   flutter_test:

@@ -15,3 +15,11 @@ class FileSelectError extends GenericException {
     super.datas,
   });
 }
+
+class InvalidFileError extends GenericException {
+  InvalidFileError({
+    required super.message,
+    super.keys,
+    super.datas,
+  });
+}
