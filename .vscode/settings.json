@@ -1,5 +1,6 @@
 {
     "cSpell.words": [
+        "Apriori",
         "dartz",
         "datasource",
         "dio",
@@ -8,6 +9,8 @@
         "lpad",
         "mobx",
         "porc",
-        "pubspec"
+        "pubspec",
+        "textfield",
+        "textformfield"
     ]
 }

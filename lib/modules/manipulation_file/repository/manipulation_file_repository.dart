@@ -1,6 +1,7 @@
-import 'dart:developer';
+import 'dart:convert';
 import 'dart:typed_data';
 
+import 'package:data_analyze/models/response_return/response_return.dart';
 import 'package:dio/dio.dart';
 import 'package:fpdart/fpdart.dart';
 
@@ -14,7 +15,7 @@ class ManipulationFileRepository {
 
   ManipulationFileRepository(this.client);
 
-  Future<Either<GenericException, bool>> uploadFile(
+  Future<Either<GenericException, ResponseReturn>> uploadFile(
     Uint8List fileB64,
     String? fileName,
   ) async {
@@ -24,11 +25,10 @@ class ManipulationFileRepository {
         '/upload',
         data: formData,
       );
-      log(response);
-      if (response != null) {
-        return const Right(true);
-      }
-      return const Right(false);
+      final responseResult = ResponseReturn.fromMap(
+        jsonDecode(response),
+      );
+      return Right(responseResult);
     } catch (e) {
       return Left(
         UnknownError(

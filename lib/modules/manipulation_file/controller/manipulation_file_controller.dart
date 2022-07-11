@@ -9,6 +9,7 @@ import 'package:mobx/mobx.dart';
 
 import '../../../models/error/exception/generic_exception.dart';
 import '../../../utils/async_function.dart';
+import '../models/result_apriori/result_apriori.dart';
 
 part 'manipulation_file_controller.g.dart';
 
@@ -24,13 +25,29 @@ abstract class _ManipulationFileControllerBase with Store {
   });
 
   @observable
+  bool isLoading = false;
+
+  @action
+  void setLoading(bool value) => isLoading = value;
+
+  @observable
   File? file;
 
   @observable
   dynamic error;
 
   @observable
-  bool success = false;
+  String messageSuccess = '';
+
+  @computed
+  List<String> get questions {
+    if (file == null) return [];
+    final lines = file!.readAsLinesSync();
+    return lines[0].split(';');
+  }
+
+  @observable
+  List<ResultApriori> resultApriori = <ResultApriori>[];
 
   @action
   Future<void> verifyStatusApi() => asyncAction(
@@ -42,22 +59,35 @@ abstract class _ManipulationFileControllerBase with Store {
   @action
   Future<void> uploadFile() => asyncAction(
         () async {
+          setLoading(true);
           error = null;
-          success = false;
+          messageSuccess = '';
 
           if (file == null) throw InvalidFileError(message: 'Arquivo inválido');
 
           final file64 = file!.readAsBytesSync();
 
+          final fileName = file?.path.split('\\').last;
+
           final result = await dataSource.uploadFile(
             file64,
-            fileName: file?.path,
+            fileName: fileName,
           );
 
           result.fold(
             (l) => error = l,
-            (r) => success = r,
+            (r) {
+              if (r.statusCode == 200) {
+                resultApriori = (r.body as List)
+                    .map(
+                      (e) => ResultApriori.fromMap(e),
+                    )
+                    .toList();
+                messageSuccess = r.message;
+              }
+            },
           );
+          setLoading(false);
         },
       );
 

@@ -1,4 +1,3 @@
-import 'dart:developer';
 import 'dart:io';
 import 'dart:typed_data';
 
@@ -6,6 +5,7 @@ import 'package:data_analyze/shared/clients/dio_client_http.dart';
 import 'package:fpdart/fpdart.dart';
 
 import '../../../models/error/exception/generic_exception.dart';
+import '../../../models/response_return/response_return.dart';
 import '../models/error/file_errors.dart';
 import '../repository/manipulation_file_repository.dart';
 
@@ -23,21 +23,31 @@ class ManipulationFileDataSource {
     }
   }
 
-  Future<Either<GenericException, bool>> uploadFile(
+  Future<Either<GenericException, ResponseReturn>> uploadFile(
     Uint8List fileB64, {
     String? fileName,
   }) async {
     try {
-      bool value = false;
+      ResponseReturn responseReturn = ResponseReturn.empty();
       final result = await repository.uploadFile(fileB64, fileName);
       result.fold(
         (l) => throw (l),
         (r) {
-          log(r.toString());
-          value = r;
+          if (r.statusCode == 200) {
+            responseReturn = r;
+          } else {
+            throw UnknownError(
+              message: r.message,
+              keys: ['error', 'statusCode'],
+              datas: [
+                r.message,
+                r.statusCode,
+              ],
+            );
+          }
         },
       );
-      return Right(value);
+      return Right(responseReturn);
     } catch (e) {
       return Left(
         UnknownError(
