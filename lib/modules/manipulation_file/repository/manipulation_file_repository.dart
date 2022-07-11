@@ -22,8 +22,12 @@ class ManipulationFileRepository {
     double minThreshold,
   ) async {
     try {
-      FormData formData =
-          client.toFormData(fileB64, fileName, minSupport, minThreshold);
+      FormData formData = client.toFormData(
+        fileB64,
+        fileName,
+        minSupport,
+        minThreshold,
+      );
       final response = await client.post(
         '/upload',
         data: formData,
