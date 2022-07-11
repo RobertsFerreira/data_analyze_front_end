@@ -25,6 +25,19 @@ abstract class _ManipulationFileControllerBase with Store {
   });
 
   @observable
+  double minSupport = 0.0;
+
+  @action
+  void setMinSupport(String value) => minSupport = double.tryParse(value) ?? 0;
+
+  @observable
+  double minThreshold = 0.0;
+
+  @action
+  void setMinThreshold(String value) =>
+      minThreshold = double.tryParse(value) ?? 0;
+
+  @observable
   bool isLoading = false;
 
   @action
@@ -72,6 +85,8 @@ abstract class _ManipulationFileControllerBase with Store {
           final result = await dataSource.uploadFile(
             file64,
             fileName: fileName,
+            minSupport: minSupport,
+            minThreshold: minThreshold,
           );
 
           result.fold(

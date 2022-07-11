@@ -27,12 +27,21 @@ class SelectFileComponent extends StatelessWidget {
           child: CustomTextFormField(
             text: 'Arquivo Selecionado',
             textEditingController: controller.textEditingController,
+            readOnly: true,
           ),
         ),
         const SizedBox(width: 10),
-        const Expanded(
+        Expanded(
           child: CustomTextFormField(
             text: 'Valor do Support Min',
+            onChanged: controller.setMinSupport,
+          ),
+        ),
+        const SizedBox(width: 10),
+        Expanded(
+          child: CustomTextFormField(
+            text: 'Valor do Threshold Min',
+            onChanged: controller.setMinThreshold,
           ),
         ),
         const SizedBox(width: 10),

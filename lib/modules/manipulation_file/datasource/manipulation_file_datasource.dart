@@ -26,10 +26,17 @@ class ManipulationFileDataSource {
   Future<Either<GenericException, ResponseReturn>> uploadFile(
     Uint8List fileB64, {
     String? fileName,
+    double minSupport = 0.01,
+    double minThreshold = 0.01,
   }) async {
     try {
       ResponseReturn responseReturn = ResponseReturn.empty();
-      final result = await repository.uploadFile(fileB64, fileName);
+      final result = await repository.uploadFile(
+        fileB64,
+        fileName,
+        minSupport,
+        minThreshold,
+      );
       result.fold(
         (l) => throw (l),
         (r) {

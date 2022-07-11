@@ -18,9 +18,12 @@ class ManipulationFileRepository {
   Future<Either<GenericException, ResponseReturn>> uploadFile(
     Uint8List fileB64,
     String? fileName,
+    double minSupport,
+    double minThreshold,
   ) async {
     try {
-      FormData formData = client.toFormData(fileB64, fileName);
+      FormData formData =
+          client.toFormData(fileB64, fileName, minSupport, minThreshold);
       final response = await client.post(
         '/upload',
         data: formData,

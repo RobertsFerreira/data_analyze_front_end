@@ -44,12 +44,19 @@ class DioClientHttp implements HttpClientInterface {
   }
 
   @override
-  dynamic toFormData(Uint8List fileB64, String? fileName) {
+  dynamic toFormData(
+    Uint8List fileB64,
+    String? fileName,
+    double minSupport,
+    double minThreshold,
+  ) {
     final form = FormData.fromMap({
       "file": MultipartFile.fromBytes(
         fileB64,
         filename: fileName,
       ),
+      'minSupport': minSupport,
+      'minThreshold': minThreshold,
     });
     return form;
   }
