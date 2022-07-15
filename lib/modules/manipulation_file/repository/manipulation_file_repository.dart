@@ -9,8 +9,6 @@ import '../../../interface/http_client_interface.dart';
 import '../../../models/error/exception/generic_exception.dart';
 
 class ManipulationFileRepository {
-  //TODO: Tratar errors do Dio aqui
-
   final HttpClientInterface client;
 
   ManipulationFileRepository(this.client);
