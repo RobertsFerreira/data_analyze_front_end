@@ -15,7 +15,7 @@ void main() {
         final ManipulationFileDataSource fileDataSource =
             ManipulationFileDataSource();
 
-        final file = fileDataSource.openFile('assets/csv/data_pesquisa3.csv');
+        final file = fileDataSource.openFile(path);
 
         expect(file.fold(id, id), isA<File>());
       },
